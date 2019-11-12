@@ -79,7 +79,7 @@ set guioptions-=e               " === Don't use GUI tabline.
 set encoding=utf-8              " === Use UTF-8 encoding inside Vim.
 set fileencoding=utf-8          " === Encode files using UTF-8 encoding.
 set noshowmode                  " === Hide mode message on the last line.
-set number                      " === Show line numbers.
+set number relativenumber       " === Show line numbers.
 set tabstop=4                   " === Set tab width to 4 spaces.
 set expandtab                   " === Replace tabs with 'tabstop' spaces.
 set shiftwidth=4                " === Set level of indent. to 4 spaces.
@@ -125,10 +125,8 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") &&
 \    b:NERDTree.isTabTree()) | q | endif
 
-" Open NERDTree if no files were specified, or if directory was specified.
+" Open NERDTree if directory was specified.
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") &&
-\    v:this_session == "" | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) &&
 \    !exists("s:std_in") | exe 'NERDTree' argv()[0] |
 \    wincmd p | ene | exe 'cd '.argv()[0] | endif
