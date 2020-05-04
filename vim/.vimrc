@@ -1,42 +1,43 @@
-" ================================================================
 " === Vim configuration by Andrija Cicovic
-" Works fine for Vim > v8.0
+" === Vim > v8.0
 "
 " === Installed plugins (in no particular order):
 "     - lightline.vim  [https://github.com/itchyny/lightline.vim]
-"     - vim-go         [https://github.com/fatih/vim-go]
+"     - gruvbox        [https://github.com/morhetz/gruvbox]
 "     - vim-fugitive   [https://github.com/tpope/vim-fugitive]
-"     - ctrlp.vim      [https://github.com/ctrlpvim/ctrlp.vim]
 "     - auto-pairs     [https://github.com/jiangmiao/auto-pairs]
 "     - nerdtree       [https://github.com/scrooloose/nerdtree]
-"     - gruvbox        [https://github.com/morhetz/gruvbox]
+"     - vim-go         [https://github.com/fatih/vim-go]
 "
-" === How to install a plugin:
+" How to install a plugin:
 " ```
 " $ git clone URL ~/.vim/pack/bundle/start/REPO_NAME
+"
 " ```
 "
-" === Verified font: Droid Sans Mono For Powerline Regular 11
-"                    [https://github.com/powerline/fonts]
-"
-" ================================================================
+" === Font: Droid Sans Mono For Powerline Regular 11
+"           [https://github.com/powerline/fonts]
 
-" =====================
-" === Global variables
-" =====================
+" === Plugin settings.
 
-let g:go_fmt_command = "goimports" " === Use goimports as Go formatting tool.
-
-let g:netrw_banner = 0             " === Remove Netrw banner.
-let g:netrw_liststyle = 3          " === Make Netrw use tree hierarchy.
-let g:netrw_browse_split = 4       " === Open file in previous window.
-let g:netrw_winsize = 25           " === Netrw window size in %.
+" Use goimports as Go formatting tool.
+let g:go_fmt_command = "goimports"
 
 " NERDTree arrows.
 let g:NERDTreeDirArrowExpandable = '📂'
 let g:NERDTreeDirArrowCollapsible = '↳'
 
-" === Configure lightline.
+" Close Vim if the only windows left open is NERDTree.
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") &&
+\    b:NERDTree.isTabTree()) | q | endif
+
+" Open NERDTree if directory was specified.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) &&
+\    !exists("s:std_in") | exe 'NERDTree' argv()[0] |
+\    wincmd p | ene | exe 'cd '.argv()[0] | endif
+
+" Lightline configuration.
 let g:lightline = {
 \   'active': {
 \    'left': [['mode', 'paste'],
@@ -57,16 +58,7 @@ let g:lightline = {
 \   'subseparator': {'left': "\uE0B1", 'right': "\uE0B3"},
 \   }
 
-" === Configure CtrlP search paths and tell it what to ignore.
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_custom_ignore = {
-\   'dir':  '\v[\/]\.(git|hg|svn)$',
-\   'file': '\v\.(exe|so|dll)$',
-\   }
-
-" =============
-" === Settings
-" =============
+" === Vim settings.
 
 syntax on                       " === Enable syntax highlighting.
 filetype plugin indent on       " === Enable plugins and indent files.
@@ -75,24 +67,26 @@ set background=dark             " === Reset the color scheme to dark colors.
 set nocompatible                " === Be iMproved (less Vi compatible).
 set laststatus=2                " === Always show the status line.
 set showtabline=2               " === Always show the tab line.
-set guioptions-=e               " === Don't use GUI tabline.
 set encoding=utf-8              " === Use UTF-8 encoding inside Vim.
 set fileencoding=utf-8          " === Encode files using UTF-8 encoding.
 set noshowmode                  " === Hide mode message on the last line.
-set number relativenumber       " === Show line numbers.
+set number relativenumber       " === Show relative line numbers.
 set tabstop=4                   " === Set tab width to 4 spaces.
 set expandtab                   " === Replace tabs with 'tabstop' spaces.
 set shiftwidth=4                " === Set level of indent. to 4 spaces.
 set cursorline                  " === Highlight cursor line.
 set incsearch                   " === Enable incremental search.
 set hlsearch                    " === Highlight search results.
-set termguicolors               " === Needed by Material color scheme.
-set backspace=indent,eol,start  " === Make Backspace act normal.
+set termguicolors               " === Needed by the gruvbox color scheme.
+set backspace=indent,eol,start  " === Make Backspace act 'normal'.
 set completeopt=menu            " === Set completion options.
 
 " Configure how whitespace characters will be shown.
-set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨,space:·
 set showbreak=↪\ 
+
+" Show newline as well
+"set listchars+=,eol:↲
 
 " Configure folding characters.
 if has('folding')
@@ -105,9 +99,7 @@ if has('folding')
     set foldtext=Foldtext()
 endif
 
-" =================================================
-" === File type based and plugin specific settings
-" =================================================
+" === File type specific settings.
 
 " Use smart indentation in C and C++ files.
 autocmd FileType c,cpp :set cindent
@@ -115,27 +107,11 @@ autocmd FileType c,cpp :set cindent
 " Set C++ comment type.
 autocmd FileType cpp :set commentstring=//\ %s
 
-" Invoke autocompletion on dot in Go files.
-"autocmd FileType go :inoremap <buffer> . .<C-x><C-o>
-
 " Auto-clean fugitive buffers.
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
-" Close Vim if the only windows left open is NERDTree.
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") &&
-\    b:NERDTree.isTabTree()) | q | endif
+" === Mappings.
 
-" Open NERDTree if directory was specified.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) &&
-\    !exists("s:std_in") | exe 'NERDTree' argv()[0] |
-\    wincmd p | ene | exe 'cd '.argv()[0] | endif
-
-" =============
-" === Mappings
-" =============
-"
-" === Mappings
 " List open buffers.
 nnoremap gb :ls<CR>:buffer<Space>
 
@@ -149,10 +125,10 @@ nnoremap <CR> o<Esc>k
 nnoremap <silent> <leader>l ml:execute 'match Search /\%'.line('.').'l/'<CR>
 
 " Trim trailing whitespace.
-" Note: Use very carefully, don't make this an autocmd! Don't use on this file!
+" NB: Use very carefully, don't make this an autocmd! Don't use on this file!
 nnoremap ;tw :%s/\s\+$//e<CR>
 
-" Show whitespace characters.
+" Toggle show whitespace characters.
 nnoremap ;sw :set list!<CR>
 
 " Toggle relative line numbering.
@@ -176,15 +152,10 @@ nnoremap <leader>7 7gt
 nnoremap <leader>8 8gt
 nnoremap <leader>9 9gt
 
-" Search open buffers.
-nmap <leader>p :CtrlPBuffer<CR>
-
 " Open/close NERDTree.
 map <C-n> :NERDTreeToggle<CR>
 
-" ==============
 " === Functions
-" ==============
 
 let s:middot='•'
 let s:raquo='»'
