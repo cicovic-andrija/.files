@@ -1,7 +1,7 @@
-## How to install a Tilix theme?
+## How to install Tilix themes?
 
 ```
 mkdir -p ~/.config/tilix/schemes
-cp *.json ~/.config/tilix/schemes/
+cp schemes/*.json ~/.config/tilix/schemes/
 ```
 
