@@ -1,1 +1,1 @@
-Personal configuration and setup files for Ubuntu.
+Personal Linux configuration and asset files.

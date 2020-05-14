@@ -5,7 +5,14 @@
 - vim-fugitive  [https://github.com/tpope/vim-fugitive]
 - auto-pairs    [https://github.com/jiangmiao/auto-pairs]
 - nerdtree      [https://github.com/scrooloose/nerdtree]
+
+### Go
+
 - vim-go        [https://github.com/fatih/vim-go]
+
+### HTML
+
+- emmet-vim     [https://github.com/mattn/emmet-vim]
 
 ## How to install a plugin in Vim v8.0+
 
