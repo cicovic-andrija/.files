@@ -4,6 +4,8 @@
 - gruvbox [https://github.com/morhetz/gruvbox]
 - vim-fugitive [https://github.com/tpope/vim-fugitive]
 - auto-pairs [https://github.com/jiangmiao/auto-pairs]
+- vim-surround [https://github.com/tpope/vim-surround]
+- vim-startify [https://github.com/mhinz/vim-startify]
 
 ### fzf
 - fzf [https://github.com/junegunn/fzf]
