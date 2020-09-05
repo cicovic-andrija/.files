@@ -15,10 +15,6 @@
 
 - vim-go [https://github.com/fatih/vim-go]
 
-### HTML
-
-- emmet-vim [https://github.com/mattn/emmet-vim]
-
 ## How to install a plugin in Vim v8.0+
 
 Directories `~/.vim/pack/*/start/` contain plugins which will be
