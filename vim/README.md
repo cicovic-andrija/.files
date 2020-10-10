@@ -29,6 +29,6 @@ can be loaded with the `packadd` command:
 $ git clone REPO-URL ~/.vim/pack/SOME-DIR/opt/PACK-NAME
 ```
 
-## Fonts
+OR
 
-- Powerline fonts [https://github.com/powerline/fonts]
+Use a plugin manager.

@@ -1,3 +1,16 @@
+" plugins
+call plug#begin('~/.vim/plugged')
+
+Plug 'fatih/vim-go'
+Plug 'itchyny/lightline.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'mhinz/vim-startify'
+Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+
+call plug#end()
+
 " don't be compatible with Vi
 set nocompatible
 
@@ -76,6 +89,9 @@ set showbreak=↪\
 " visible whitespace characters when ':set list' is used
 set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨,space:·,eol:↲
 
+" set completion options
+set completeopt=menuone,noinsert,popup
+
 " <leader> key is space
 let mapleader = " "
 
@@ -93,6 +109,9 @@ nnoremap <leader>tw :%s/\s\+$//e<CR>
 
 " mapping to toggle visible whitespace characters
 nnoremap <leader>sl :set list!<CR>
+
+" mapping for running go programs
+nnoremap <leader>gr :GoRun<CR>
 
 " tab movement mappings
 nnoremap <C-Left> :tabprevious<CR>
@@ -112,19 +131,23 @@ let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 3
 let g:netrw_winsize = 25
-autocmd FileType netrw set nolist
+autocmd filetype netrw set nolist
 
 " set indendation mode for C/C++ files
-autocmd FileType c,cpp :set cindent
+autocmd filetype c,cpp :set cindent
 
 " set comment type for C++ files
-autocmd FileType cpp :set commentstring=//\ %s
+autocmd filetype cpp :set commentstring=//\ %s
 
 " add fzf directory to rtp after installation
 set rtp+=~/.fzf
 
 " clear fugitive buffers
-autocmd BufReadPost fugitive://* set bufhidden=delete
+autocmd bufreadpost fugitive://* set bufhidden=delete
+
+" html file/plugin settings
+let g:user_emmet_install_global = 0
+autocmd filetype html,css EmmetInstall
 
 " use goimports as Go fmt program
 let g:go_fmt_command = "goimports"
@@ -133,22 +156,20 @@ let g:go_fmt_command = "goimports"
 let g:go_auto_type_info = 1
 
 " update info every 100ms instead of default 800ms
-set updatetime=100
+"set updatetime=100
 
 " lightline settings and functions
 let g:lightline = {
 \ 'active': {
 \   'left': [['mode', 'paste'], ['readonly', 'filename'], ['gitbranch']], 
-\   'right': [['lineinfo'], ['filetype'],
-\     ['buffer', 'register', 'fileformat', 'fileencoding']]
+\   'right': [['lineinfo'], ['filetype'], ['buff', 'filefmt', 'fileencoding']]
 \ },
 \ 'component': {
 \   'filename': '%{LightlineFilename()}',
 \   'gitbranch': '%{"\uE0A0 ".GitBranch()}',
-\   'register': '%{v:register}',
-\   'buffer': '[%n]',
+\   'buff': '[%n]',
 \   'filetype': '%{LightlineFiletype()}',
-\   'fileformat': '%{LightlineFileformat()}'
+\   'filefmt': '%{LightlineFileformat()}'
 \ },
 \ 'separator': {'left': "\uE0B0", 'right': "\uE0B2"},
 \ 'subseparator': {'left': "\uE0B1", 'right': "\uE0B3"},
@@ -167,12 +188,12 @@ function! LightlineFiletype()
 endfunction
 
 function! LightlineFilename()
-    let filename = expand('%:p') !=# '' ? expand('%:p') : '[No Name]'
+    let filename = expand('%:t') !=# '' ? expand('%:t') : '[No Name]'
     let modified = &modified ? ' [+]' : ''
     return filename . modified
 endfunction
 
-" status line settings when plugin isn't used
+" status line settings when statusline plugin isn't used
 "set statusline=\ %F
 "set statusline+=\ [%4lL][%3cC]
 "set statusline+=%<
