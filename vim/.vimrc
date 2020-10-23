@@ -1,121 +1,139 @@
-" plugins
-call plug#begin('~/.vim/plugged')
+" =============================
+" | .vimrc by Andrija Cicovic |
+" =============================
 
+" ============
+" | Settings |
+" ============
+
+" Don't be compatible with Vi.
+set nocompatible
+
+" Set character encoding inside Vim as UTF-8.
+set encoding=utf-8
+
+" Encode file as UTF-8.
+set fileencoding=utf-8
+
+" Undo directory (make sure it exists).
+set undodir=~/.vim/undodir
+
+" Use undo file.
+set undofile
+
+" Enable syntax highlighting.
+syntax on
+
+" Detect filetype, and related plugins and indents.
+filetype plugin indent on
+
+" Plugins (managed by junegunn/vim-plug).
+call plug#begin('~/.vim/plugged')
 Plug 'fatih/vim-go'
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-startify'
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-
 call plug#end()
 
-" don't be compatible with Vi
-set nocompatible
-
-" set character encoding inside Vim as UTF-8
-set encoding=utf-8
-
-" encode file as UTF-8
-set fileencoding=utf-8
-
-" undo directory, make sure it exists
-set undodir=~/.vim/undodir
-
-" use undo file
-set undofile
-
-" enable syntax highlighting
-syntax on
-
-" detect filetype, and related plugins and indents
-filetype plugin indent on
-
-" colorscheme settings
+" Colorscheme settings.
 set background=dark
 set termguicolors
 colorscheme gruvbox
 highlight Normal guibg=NONE ctermbg=NONE
 
-" no error bells!
+" No error bells.
 set noerrorbells
 
-" always show status line (down)
+" Always show status line (down).
 set laststatus=2
 
-" always show tab line (up)
+" Always show tab line (up).
 set showtabline=2
 
-" don't show mode on last line (mode is shown in lightline)
+" Don't show mode on last line (mode is shown in lightline).
 set noshowmode
 
-" use relative line numbering
+" Use relative line numbering.
 set number relativenumber
 
-" set tabstop to 4 spaces
+" Set tabstop to 4 spaces.
 set tabstop=4
 
-" set softtabstop to 4 spaces
+" Set softtabstop to 4 spaces.
 set softtabstop=4
 
-" expand tabs to spaces unless Ctrl-V+TAB is used
+" Expand tabs to spaces unless Ctrl-V+TAB is used.
 set expandtab
 
-" indent by 4 spaces
+" Indent by 4 spaces.
 set shiftwidth=4
 
-" don't wrap lines
+" Don't wrap lines.
 set nowrap
 
-" highligh cursor line
+" Highligh cursor line.
 set cursorline
 
-" use incremental search
+" Use incremental search.
 set incsearch
 
-" highlight search results
-set hlsearch
+" Don't highlight search results.
+set nohlsearch
 
-" don't make windows equal size on split
+" Don't make windows equal size on split.
 set noequalalways
 
-" make backspace act normally
+" Make backspace act normally.
 set backspace=indent,eol,start
 
-" show line break as a character
+" Show line break as a character.
 set showbreak=↪\ 
 
-" visible whitespace characters when ':set list' is used
-set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨,space:·,eol:↲
+" Visible whitespace characters when ':set list' is used.
+set listchars=tab:→\ ,trail:•,space:·,eol:↲
 
-" set completion options
-set completeopt=menuone,noinsert,popup
+" Add fzf directory to run time path after installation.
+set rtp+=~/.fzf
 
-" <leader> key is space
+" Update info every 100ms instead of default 800ms.
+set updatetime=100
+
+" <leader> key is space.
 let mapleader = " "
 
-" mapping to insert empty line
+" ============
+" | Mappings |
+" ============
+
+" Mapping to insert empty line.
 nnoremap <CR> o<Esc>k
 
-" mapping to clear search results
-nnoremap <silent> <C-l> :nohl<CR><C-l>
-
-" mapping to show buffer list
+" Mapping to show buffer list.
 nnoremap <leader>] :ls<CR>:buffer<Space>
 
-" mapping to trim trailing whitespace. use very carefully! not on this file!
-nnoremap <leader>tw :%s/\s\+$//e<CR>
+" Mapping to toggle visible whitespace characters.
+nnoremap <leader>w :set list!<CR>
 
-" mapping to toggle visible whitespace characters
-nnoremap <leader>sl :set list!<CR>
+" Useful copy/paste mappings.
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+nnoremap <leader>p "+p
+vnoremap <leader>p "_dP
 
-" mapping for running go programs
-nnoremap <leader>gr :GoRun<CR>
+" Mapping to generate tags from make target 'tags'.
+nnoremap <leader>t :silent make tags\|redraw!\|cc<CR>
 
-" tab movement mappings
-nnoremap <C-Left> :tabprevious<CR>
-nnoremap <C-Right> :tabnext<CR>
+" Mapping to open .vimrc in a new tab.
+nnoremap <leader>v :silent tabnew ~/.vimrc<CR>
+
+" Tab movement mappings.
+nnoremap <Left> :silent tabprevious<CR>
+nnoremap <Right> :silent tabnext<CR>
 nnoremap <leader>1 1gt
 nnoremap <leader>2 2gt
 nnoremap <leader>3 3gt
@@ -126,39 +144,48 @@ nnoremap <leader>7 7gt
 nnoremap <leader>8 8gt
 nnoremap <leader>9 9gt
 
-" netrw settings
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 3
-let g:netrw_winsize = 25
-autocmd filetype netrw set nolist
+" Window movement / scrolling mappings.
+nnoremap <Up> <C-y>
+nnoremap <Down> <C-e>
+nnoremap <leader>l <C-w>l
+nnoremap <leader>h <C-w>h
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
 
-" set indendation mode for C/C++ files
-autocmd filetype c,cpp :set cindent
+" =================
+" | Auto-commands |
+" =================
 
-" set comment type for C++ files
-autocmd filetype cpp :set commentstring=//\ %s
+" C/C++ specific settings.
+augroup CPROGLANG
+    autocmd!
+    autocmd filetype c,cpp set cindent
+    autocmd filetype c,cpp set tags+=.tags
+    autocmd filetype cpp set commentstring=//\ %s
+augroup END
 
-" add fzf directory to rtp after installation
-set rtp+=~/.fzf
+" Misc. autocmd settings.
+augroup MISC
+    autocmd!
+    autocmd bufreadpost fugitive://* set bufhidden=delete
+augroup END
 
-" clear fugitive buffers
-autocmd bufreadpost fugitive://* set bufhidden=delete
+" ===================
+" | Plugin settings |
+" ===================
 
-" html file/plugin settings
-let g:user_emmet_install_global = 0
-autocmd filetype html,css EmmetInstall
+" fzf configuration.
+let g:fzf_layout = { 'window': {'width': 0.8, 'height': 0.8} }
+let $FZF_DEFAULT_OPTS='--reverse'
 
-" use goimports as Go fmt program
+" vim-go configuration.
 let g:go_fmt_command = "goimports"
-
-" automatically show Go type/function info
 let g:go_auto_type_info = 1
 
-" update info every 100ms instead of default 800ms
-"set updatetime=100
+" Startify configuration.
+let g:startify_bookmarks = [{'v': '~/.vimrc'}]
 
-" lightline settings and functions
+" Lightline configuration.
 let g:lightline = {
 \ 'active': {
 \   'left': [['mode', 'paste'], ['readonly', 'filename'], ['gitbranch']], 
@@ -167,13 +194,17 @@ let g:lightline = {
 \ 'component': {
 \   'filename': '%{LightlineFilename()}',
 \   'gitbranch': '%{"\uE0A0 ".GitBranch()}',
-\   'buff': '[%n]',
+\   'buff': '%n',
 \   'filetype': '%{LightlineFiletype()}',
 \   'filefmt': '%{LightlineFileformat()}'
 \ },
 \ 'separator': {'left': "\uE0B0", 'right': "\uE0B2"},
 \ 'subseparator': {'left': "\uE0B1", 'right': "\uE0B3"},
 \ }
+
+" =============
+" | Functions |
+" =============
 
 function! GitBranch()
     return exists("*FugitiveHead")?fugitive#head():"[Unknown]"
@@ -193,10 +224,6 @@ function! LightlineFilename()
     return filename . modified
 endfunction
 
-" status line settings when statusline plugin isn't used
-"set statusline=\ %F
-"set statusline+=\ [%4lL][%3cC]
-"set statusline+=%<
-"set statusline+=[%2p%%]
-"set statusline+=[reg\ %{v:register}][buf\ %n]
-"set statusline+=%y[%{&fileencoding?&fileencoding:&encoding}]%m%r%h
+function! TrimTrailingWhitespace()
+    execute '%s/\s\+$//e'
+endfunction
