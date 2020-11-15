@@ -15,11 +15,14 @@ set encoding=utf-8
 " Encode file as UTF-8.
 set fileencoding=utf-8
 
-" Undo directory (make sure it exists).
-set undodir=~/.vim/undodir
+" Set line-ending format.
+set fileformat=unix
 
-" Use undo file.
-set undofile
+" Undo directory (make sure it exists).
+if has("persistent_undo")
+    set undodir=~/.vim/undodir
+    set undofile
+endif
 
 " Enable syntax highlighting.
 syntax on
@@ -34,6 +37,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
@@ -87,6 +91,10 @@ set nohlsearch
 
 " Don't make windows equal size on split.
 set noequalalways
+
+" Set folding settings.
+set foldmethod=indent
+set foldlevel=4
 
 " Make backspace act normally.
 set backspace=indent,eol,start
@@ -177,6 +185,7 @@ augroup END
 " fzf configuration.
 let g:fzf_layout = { 'window': {'width': 0.8, 'height': 0.8} }
 let $FZF_DEFAULT_OPTS='--reverse'
+nnoremap <C-p> :Files<CR>
 
 " vim-go configuration.
 let g:go_fmt_command = "goimports"
