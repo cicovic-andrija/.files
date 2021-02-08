@@ -1,96 +1,124 @@
-" don't be compatible with Vi
+" =============================
+" | .vimrc by Andrija Cicovic |
+" =============================
+
+" ============
+" | Settings |
+" ============
+
+" Don't be compatible with Vi.
 set nocompatible
 
-" set character encoding inside Vim as UTF-8
+" Set character encoding inside Vim as UTF-8.
 set encoding=utf-8
 
-" encode file as UTF-8
+" Encode file as UTF-8.
 set fileencoding=utf-8
 
-" enable syntax highlighting
+" Set line-ending format.
+set fileformat=unix
+
+" Enable syntax highlighting.
 syntax on
 
-" detect filetype, and related plugins and indents
+" Detect filetype, and related plugins and indents.
 filetype plugin indent on
 
-" colorscheme settings
+" Plugins (managed by junegunn/vim-plug).
+call plug#begin('~/vimfiles/plugged')
+Plug 'morhetz/gruvbox'
+Plug 'itchyny/lightline.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround'
+Plug 'mhinz/vim-startify'
+call plug#end()
+
+" Colorscheme settings.
 set background=dark
 set termguicolors
 colorscheme gruvbox
 
-" no error bells!
+" No error bells.
 set noerrorbells
 
-" always show status line (down)
+" Always show status line (down).
 set laststatus=2
 
-" always show tab line (up)
+" Always show tab line (up).
 set showtabline=2
 
-" don't show mode on last line (mode is shown in lightline)
+" Don't show mode on last line (mode is shown in lightline).
 set noshowmode
 
-" use relative line numbering
+" Use relative line numbering.
 set number relativenumber
 
-" set tabstop to 4 spaces
+" Set tabstop to 4 spaces.
 set tabstop=4
 
-" set softtabstop to 4 spaces
+" Set softtabstop to 4 spaces.
 set softtabstop=4
 
-" expand tabs to spaces unless Ctrl-V+TAB is used
+" Expand tabs to spaces unless Ctrl-V+TAB is used.
 set expandtab
 
-" indent by 4 spaces
+" Indent by 4 spaces.
 set shiftwidth=4
 
-" don't wrap lines
+" Don't wrap lines.
 set nowrap
 
-" highligh cursor line
+" Highligh cursor line.
 set cursorline
 
-" use incremental search
+" Use incremental search.
 set incsearch
 
-" highlight search results
-set hlsearch
+" Don't highlight search results.
+set nohlsearch
 
-" don't make windows equal size on split
+" Don't make windows equal size on split.
 set noequalalways
 
-" make backspace act normally
+" Make backspace act normally.
 set backspace=indent,eol,start
 
-" GUI options
-set guioptions=e
-set guifont=Courier_New:h16:cANSI:qDRAFT
+" Visible whitespace characters when ':set list' is used.
+set listchars=tab:→\ ,trail:•,space:·,eol:↲
 
-" visible whitespace characters when ':set list' is used
-set listchars=tab:→\ ,trail:•,space:·
+" GUI options.
+set guioptions=
+set guifont=JetBrains_Mono_NL:h14:cANSI:qDRAFT
 
-" <leader> key is space
+" <leader> key is space.
 let mapleader = " "
 
-" mapping to insert empty line
+" ============
+" | Mappings |
+" ============
+
+" Mapping to insert empty line.
 nnoremap <CR> o<Esc>k
 
-" mapping to clear search results
-nnoremap <silent> <C-l> :nohl<CR><C-l>
-
-" mapping to show buffer list
+" Mapping to show buffer list.
 nnoremap <leader>] :ls<CR>:buffer<Space>
 
-" mapping to trim trailing whitespace. use very carefully! not on this file!
-nnoremap <leader>tw :%s/\s\+$//e<CR>
+" Mapping to toggle visible whitespace characters.
+nnoremap <leader>w :set list!<CR>
 
-" mapping to toggle visible whitespace characters
-nnoremap <leader>sl :set list!<CR>
+" Useful copy/paste mappings.
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+nnoremap <leader>p "+p
+vnoremap <leader>p "_dP
 
-" tab movement mappings
-nnoremap <C-Left> :tabprevious<CR>
-nnoremap <C-Right> :tabnext<CR>
+" Mapping to open .vimrc in a new tab.
+nnoremap <leader>v :silent tabnew ~/_vimrc<CR>
+nnoremap <leader>s :Startify<CR>
+
+" Tab movement mappings.
+nnoremap <Left> :silent tabprevious<CR>
+nnoremap <Right> :silent tabnext<CR>
 nnoremap <leader>1 1gt
 nnoremap <leader>2 2gt
 nnoremap <leader>3 3gt
@@ -101,39 +129,53 @@ nnoremap <leader>7 7gt
 nnoremap <leader>8 8gt
 nnoremap <leader>9 9gt
 
-" clipboard mappings
-nnoremap <leader>y "+y
-vnoremap <leader>y "+y
-nnoremap <leader>p "+p
+" Window movement / scrolling mappings.
+nnoremap <Up> <C-y>
+nnoremap <Down> <C-e>
+nnoremap <leader>l <C-w>l
+nnoremap <leader>h <C-w>h
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
 
-" netrw settings
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 3
-let g:netrw_winsize = 25
-autocmd FileType netrw set nolist
+" =================
+" | Auto-commands |
+" =================
 
-" set indendation mode for C/C++ files
-autocmd FileType c,cpp :set cindent
+" C/C++ specific settings.
+augroup CPROGLANG
+    autocmd!
+    autocmd filetype c,cpp set cindent
+    autocmd filetype c,cpp set tags+=.tags
+    autocmd filetype cpp set commentstring=//\ %s
+augroup END
 
-" set comment type for C++ files
-autocmd FileType cpp :set commentstring=//\ %s
+" ===================
+" | Plugin settings |
+" ===================
 
-" lightline settings and functions
+" Startify configuration.
+let g:startify_bookmarks = [{'v': '~/_vimrc'}]
+
+" Lightline configuration.
 let g:lightline = {
 \ 'active': {
 \   'left': [['mode', 'paste'], ['readonly', 'filename']], 
-\   'right': [['lineinfo'], ['filetype'],
-\     ['buffer', 'register', 'fileformat', 'fileencoding']]
+\   'right': [['lineinfo'], ['filetype'], ['buff', 'filefmt', 'fileencoding']]
 \ },
 \ 'component': {
 \   'filename': '%{LightlineFilename()}',
-\   'register': '%{v:register}',
-\   'buffer': '[%n]',
+\   'buff': '%n',
 \   'filetype': '%{LightlineFiletype()}',
-\   'fileformat': '%{LightlineFileformat()}'
+\   'filefmt': '%{LightlineFileformat()}'
 \ },
+\ 'separator': {'left': "\uE0B0", 'right': "\uE0B2"},
+\ 'subseparator': {'left': "\uE0B1", 'right': "\uE0B3"},
 \ }
+let g:lightline.colorscheme = 'Tomorrow'
+
+" =============
+" | Functions |
+" =============
 
 function! LightlineFileformat()
     return winwidth(0) > 70 ? &fileformat : ''
@@ -144,15 +186,11 @@ function! LightlineFiletype()
 endfunction
 
 function! LightlineFilename()
-    let filename = expand('%:p') !=# '' ? expand('%:p') : '[No Name]'
+    let filename = expand('%:t') !=# '' ? expand('%:t') : '[No Name]'
     let modified = &modified ? ' [+]' : ''
     return filename . modified
 endfunction
 
-" status line settings when plugin isn't used
-"set statusline=\ %F
-"set statusline+=\ [%4lL][%3cC]
-"set statusline+=%<
-"set statusline+=[%2p%%]
-"set statusline+=[reg\ %{v:register}][buf\ %n]
-"set statusline+=%y[%{&fileencoding?&fileencoding:&encoding}]%m%r%h
+function! TrimTrailingWhitespace()
+    execute '%s/\s\+$//e'
+endfunction
