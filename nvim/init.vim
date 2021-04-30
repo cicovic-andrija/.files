@@ -1,4 +1,6 @@
+"
 " init.vim by Andrija Cicovic
+"
 
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'morhetz/gruvbox'
@@ -8,7 +10,6 @@ Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-startify'
 call plug#end()
 
-"todo: cursorblock always
 syntax on
 filetype plugin indent on
 colorscheme gruvbox
@@ -33,12 +34,13 @@ set noequalalways
 set listchars=tab:→\ ,trail:•,space:·,eol:↲
 set scrolloff=8
 set completeopt=menuone,noinsert,noselect
-augroup CPROGLANG
-  autocmd!
-  autocmd filetype c,cpp set cindent
-  autocmd filetype c,cpp set tags+=.tags
-  autocmd filetype cpp set commentstring=//\ %s
-augroup END
+
+augroup clang
+autocmd!
+autocmd filetype *.c,*.cpp set cindent
+autocmd filetype *.c,*.cpp set tags+=.tags
+autocmd filetype *.cpp set commentstring=//\ %s
+augroup end
 
 function! LightlineFileformat()
     return winwidth(0) > 70 ? &fileformat : ''
@@ -87,7 +89,7 @@ nnoremap <leader>k <C-w>k
 
 let g:lightline = {
 \ 'active': {
-\   'left': [['mode', 'paste'], ['readonly', 'filename']], 
+\   'left': [['mode', 'paste'], ['readonly', 'filename']],
 \   'right': [['lineinfo'], ['filetype'], ['buff', 'filefmt', 'fileencoding']]
 \ },
 \ 'component': {
