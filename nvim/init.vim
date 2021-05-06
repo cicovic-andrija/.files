@@ -6,8 +6,8 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-startify'
+Plug 'fatih/vim-go'
 call plug#end()
 
 syntax on
@@ -17,7 +17,6 @@ set fileencoding=utf-8
 set fileformat=unix
 set exrc
 set noerrorbells
-set laststatus=2
 set noshowmode
 set number
 set relativenumber
@@ -31,7 +30,7 @@ set incsearch
 set nohlsearch
 set hidden
 set noequalalways
-set listchars=tab:→\ ,trail:•,space:·,eol:↲
+set listchars=tab:→\ ,trail:•,space:·,eol:¬
 set scrolloff=8
 set completeopt=menuone,noinsert,noselect
 
