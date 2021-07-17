@@ -4,15 +4,19 @@
 
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'morhetz/gruvbox'
+Plug 'arcticicestudio/nord-vim'
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mhinz/vim-startify'
 Plug 'fatih/vim-go'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 call plug#end()
 
 syntax on
 filetype plugin indent on
-colorscheme gruvbox
+colorscheme nord
 set fileencoding=utf-8
 set fileformat=unix
 set exrc
@@ -81,6 +85,7 @@ nnoremap <Left> :silent tabprevious<CR>
 nnoremap <Right> :silent tabnext<CR>
 nnoremap <Up> <C-y>
 nnoremap <Down> <C-e>
+nnoremap <silent> <C-p> :Files<CR>
 nnoremap <leader>l <C-w>l
 nnoremap <leader>h <C-w>h
 nnoremap <leader>j <C-w>j
@@ -101,3 +106,12 @@ let g:lightline = {
 \ 'subseparator': {'left': "\uE0B1", 'right': "\uE0B3"},
 \ }
 let g:lightline.colorscheme = 'Tomorrow'
+
+" Go settings
+" disable all linters as that is taken care of by coc.nvim plugin
+let g:go_diagnostics_enabled = 0
+let g:go_metalinter_enabled = []
+" don't jump to errors after metalinter is invoked
+let g:go_jump_to_error = 0
+" run goimports on file save
+let g:go_fmt_command = "goimports"
